@@ -1,0 +1,42 @@
+const express = require("express");
+const bodyParser = require('body-parser');
+
+const app = express(); 
+const router = express.Router();
+
+app.use(bodyParser.json());
+
+let voitures = [
+    {id:1,name:"clio"},
+    {id:2,name:"megane"},
+    {id:3,name:"range"}];
+
+router.post('/add', (req, res) =>{
+    voitures.push(req.body);
+    res.json(req.body);
+});
+    
+    router.get('/all', (req, res) =>{
+    res.json(voitures);
+});
+
+router.get('/:id', (req, res) => {
+    const voitureId = parseInt(req.params.id);
+    const voiture = voitures.find(v => v.id === voitureId);
+    res.json(voiture);
+});
+
+router.put('/upd/:id', (req,res) =>
+{
+    const voitureId = voitures.findIndex(v => v.id === parseInt(req.params.id));
+  if (voitureId !== -1) {
+    voitures[voitureIndex] = req.body;
+    res.json(voitures[voitureIndex]);
+  } else {
+    res.status(404).json({ message: 'Voiture non trouvée' });
+  }
+});
+
+
+
+module.exports = router;
